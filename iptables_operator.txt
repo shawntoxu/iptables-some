@@ -1,0 +1,7 @@
+
+查看nat规则(带num 号)
+iptables -t nat -L -n  --line-number 
+以num号删除规则
+iptables -t nat -D POSTROUTING 2
+
+iptables -t nat -D PREROUTING 36 
