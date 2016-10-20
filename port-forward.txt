@@ -1,0 +1,21 @@
+目标： 通过访问192.168.1.10:21 转发到192.168.1.11:21
+
+ftp：192.168.1.10的21 转发到 192.168.1.11的21；
+
+1. 需要192.168.1.10先开启linux的数据转发功能
+
+vim /etc/sysctl.conf
+
+将net.ipv4.ip_forward=0改为1
+
+sysctl -p
+
+2. 更改192.168.1.10 的  iptables，运行下列命令
+
+#将192.168.1.10的21端口数据转发到192.168.1.11:21。
+
+iptables -t nat -A PREROUTING -d 192.168.1.10 -p tcp –dport 21 -j DNAT –to-destination 192.168.1.11:21
+
+#将192.168.1.11的21端口数据返回时将源IP改为192.168.1.10
+
+iptables -t nat -A POSTROUTING -d 192.168.1.11 -p tcp –dport 21 -j SNAT –to-source 192.168.1.10
